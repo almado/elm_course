@@ -1,0 +1,127 @@
+var _user$project$Guess$generateResult = function (_p0) {
+	var _p1 = _p0;
+	var txt = _elm_lang$core$Native_Utils.eq(_p1.revealedWord.text, _p1.word) ? _elm_lang$html$Html$text('You didn\'t get it') : (_p1.isCorrect ? _elm_lang$html$Html$text('You got it!') : _elm_lang$html$Html$text('Nope'));
+	return txt;
+};
+var _user$project$Guess$checkIfCorrect = F2(
+	function (model, txt) {
+		return _elm_lang$core$Native_Utils.eq(txt, model.word) ? true : false;
+	});
+var _user$project$Guess$revealAndIncrement = function (_p2) {
+	var _p3 = _p2;
+	var _p5 = _p3.word;
+	var _p4 = _p3.revealedWord;
+	return _elm_lang$core$Native_Utils.eq(_p4.text, _p5) ? _p4 : _elm_lang$core$Native_Utils.update(
+		_p4,
+		{
+			pos: _p4.pos + 1,
+			text: A3(_elm_lang$core$String$slice, 0, _p4.pos, _p5)
+		});
+};
+var _user$project$Guess$update = F2(
+	function (msg, model) {
+		var _p6 = msg;
+		if (_p6.ctor === 'Answer') {
+			var _p7 = _p6._0;
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					guess: _p7,
+					isCorrect: A2(_user$project$Guess$checkIfCorrect, model, _p7)
+				});
+		} else {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					revealedWord: _user$project$Guess$revealAndIncrement(model)
+				});
+		}
+	});
+var _user$project$Guess$Model = F4(
+	function (a, b, c, d) {
+		return {word: a, guess: b, isCorrect: c, revealedWord: d};
+	});
+var _user$project$Guess$model = A4(
+	_user$project$Guess$Model,
+	'Saturday',
+	'',
+	false,
+	{pos: 2, text: 'S'});
+var _user$project$Guess$Reveal = {ctor: 'Reveal'};
+var _user$project$Guess$Answer = function (a) {
+	return {ctor: 'Answer', _0: a};
+};
+var _user$project$Guess$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h2,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'I\'m thinking of a word that starts with ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								model.revealedWord.text,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									' that has ',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(
+											_elm_lang$core$String$length(model.word)),
+										' letters.'))))),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$placeholder('Type your guess'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onInput(_user$project$Guess$Answer),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$Guess$Reveal),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Give me a hint'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _user$project$Guess$generateResult(model),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _user$project$Guess$main = _elm_lang$html$Html$beginnerProgram(
+	{model: _user$project$Guess$model, view: _user$project$Guess$view, update: _user$project$Guess$update})();
